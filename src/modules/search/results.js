@@ -7,7 +7,7 @@ const SearchResults = (props) => {
             <ol className="books-grid">
                 {props.results.map((book) => (
                     <li key={book.id}>
-                        <Book shelfID={props.bookShelfMap[book.id]} bookDetails={book} handleShelfChangeForBook={props.handleShelfChangeForBook}/>
+                        <Book shelfID={props.bookShelfMap[book.id] || 'none'} bookDetails={book} handleShelfChangeForBook={props.handleShelfChangeForBook}/>
                     </li>
                 ))}
             </ol>

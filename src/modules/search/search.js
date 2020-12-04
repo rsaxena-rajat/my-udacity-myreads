@@ -16,7 +16,6 @@ class Search extends Component {
         }, {});
         if (allowedTerms[value.toLowerCase()]) {
             const results = await BooksAPI.search(allowedTerms[value.toLowerCase()]);
-            console.log(results);
             this.setState({
                 keyword: value,
                 results

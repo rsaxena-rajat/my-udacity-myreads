@@ -46,7 +46,6 @@ class BooksApp extends React.Component {
   }
 
   handleShelfChangeForBook = async (bookID, shelf) => {
-    console.log('Call')
     await BooksAPI.update({id: bookID}, shelf);
     // At this point, we could have shuffled the state directly.
     // But the backend could have been updated from a different browser/device too.

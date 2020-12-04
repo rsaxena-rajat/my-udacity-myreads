@@ -5,12 +5,12 @@ const Menu = (props) => {
     const shelfMap = {
         currentlyReading: 'Currently Reading',
         wantToRead: 'Want to Read',
-        read: 'Read'
+        read: 'Read',
+        none: 'None'
     }
 
     const handleChange = (bookID) => {
         return (event) => {
-            console.log(event.target.value, shelfMap[event.target.value])
             if (shelfMap[event.target.value]) {
                 props.handleShelfChangeForBook(bookID, event.target.value)
             }
@@ -29,7 +29,6 @@ const Menu = (props) => {
                         return <option key={shelf} value={shelf}>{shelfMap[shelf]}</option>
                     })
                 }
-                <option value="none">None</option>
             </select>
         </div>
     )
