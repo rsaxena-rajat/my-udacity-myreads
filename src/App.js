@@ -18,17 +18,20 @@ class BooksApp extends React.Component {
       currentlyReading: [],
       wantToRead: [],
       read: []
-    }
+    },
+    bookShelfMap: {}
   }
 
   handlePageChange = (showSearchPage) => {
     this.setState({showSearchPage})
   }
 
-  async componentDidMount() {
+  refreshShelves = async () => {
     const books = await BooksAPI.getAll();
+    const bookShelfMap = {};
     const shelves = books.reduce((initial, book) => {
       initial[book.shelf].push(book);
+      bookShelfMap[book.id] = book.shelf;
       return initial;
     }, {
       currentlyReading: [],
@@ -37,15 +40,29 @@ class BooksApp extends React.Component {
     })
     this.setState((current) => ({
       ...current,
-      shelves
+      shelves,
+      bookShelfMap
     }))
+  }
+
+  handleShelfChangeForBook = async (bookID, shelf) => {
+    console.log('Call')
+    await BooksAPI.update({id: bookID}, shelf);
+    // At this point, we could have shuffled the state directly.
+    // But the backend could have been updated from a different browser/device too.
+    // Hence, it may be better to reset all shelves
+    this.refreshShelves();
+  }
+
+  async componentDidMount() {
+    this.refreshShelves();
   }
 
   render() {
     return (
       <div className="app">
         {this.state.showSearchPage ? (
-          <Search onCloseClick={this.handlePageChange}/>
+          <Search onCloseClick={this.handlePageChange} bookShelfMap={this.state.bookShelfMap} handleShelfChangeForBook={this.handleShelfChangeForBook} />
         ) : (
           <div className="list-books">
             <div className="list-books-title">
@@ -53,9 +70,9 @@ class BooksApp extends React.Component {
             </div>
             <div className="list-books-content">
               <div>
-                <Shelf title='Currently Reading' books={this.state.shelves.currentlyReading}/>
-                <Shelf title='Want to Read' books={this.state.shelves.wantToRead}/>
-                <Shelf title='Read' books={this.state.shelves.read}/>
+                <Shelf title='Currently Reading' shelfID='currentlyReading' books={this.state.shelves.currentlyReading} handleShelfChangeForBook={this.handleShelfChangeForBook}/>
+                <Shelf title='Want to Read' shelfID='wantToRead' books={this.state.shelves.wantToRead} handleShelfChangeForBook={this.handleShelfChangeForBook}/>
+                <Shelf title='Read' shelfID='read' books={this.state.shelves.read} handleShelfChangeForBook={this.handleShelfChangeForBook}/>
               </div>
             </div>
             <div className="open-search">

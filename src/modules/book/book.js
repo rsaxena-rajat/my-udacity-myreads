@@ -6,7 +6,7 @@ const Book = (props) => {
         <div className="book">
             <div className="book-top">
                 <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url("${props.bookDetails.imageLinks.thumbnail}")` }}></div>
-                <Menu />
+                <Menu handleShelfChangeForBook={props.handleShelfChangeForBook} bookID={props.bookDetails.id} shelfID={props.shelfID} />
             </div>
             <div className="book-title">{props.bookDetails.title}</div>
             <div className="book-authors">{props.bookDetails.authors}</div>

@@ -10,7 +10,7 @@ const Shelf = (props) => {
                     {
                         props.books.map((book) => (
                             <li key={book.id}>
-                                <Book bookDetails={book} />
+                                <Book shelfID={props.shelfID} bookDetails={book} handleShelfChangeForBook={props.handleShelfChangeForBook}/>
                             </li>
                         ))
                     }
