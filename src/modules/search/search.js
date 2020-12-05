@@ -29,10 +29,12 @@ class Search extends Component {
     }
 
     render () {
+        const {keyword, results} = this.state;
+        const {onCloseClick, bookShelfMap, handleShelfChangeForBook} = this.props;
         return (
             <div className="search-books">
-                <SearchBar onCloseClick={this.props.onCloseClick} handleKeywordChange={this.handleKeywordChange} value={this.state.keyword} />
-                <SearchResults results={this.state.results} bookShelfMap={this.props.bookShelfMap} handleShelfChangeForBook={this.props.handleShelfChangeForBook} />
+                <SearchBar onCloseClick={onCloseClick} handleKeywordChange={this.handleKeywordChange} value={keyword} />
+                <SearchResults results={results} bookShelfMap={bookShelfMap} handleShelfChangeForBook={handleShelfChangeForBook} />
             </div>
         )
     }
