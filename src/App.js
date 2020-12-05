@@ -1,12 +1,12 @@
 import React from 'react'
-import {Link, Route} from 'react-router-dom'
+import {Route} from 'react-router-dom'
 import {cloneDeep, unset} from 'lodash'
 
 import * as BooksAPI from './BooksAPI'
 import './App.css'
 
+import MyReads from './modules/myreads/myreads'
 import Search from './modules/search/search'
-import Shelf from './modules/shelf/shelf'
 
 class BooksApp extends React.Component {
   state = {
@@ -71,21 +71,7 @@ class BooksApp extends React.Component {
         )} />
 
         <Route exact path='/' render={() => (
-          <div className="list-books">
-            <div className="list-books-title">
-              <h1>MyReads</h1>
-            </div>
-            <div className="list-books-content">
-              <div>
-                <Shelf title='Currently Reading' shelfID='currentlyReading' books={this.state.shelves.currentlyReading} handleShelfChangeForBook={this.handleShelfChangeForBook}/>
-                <Shelf title='Want to Read' shelfID='wantToRead' books={this.state.shelves.wantToRead} handleShelfChangeForBook={this.handleShelfChangeForBook}/>
-                <Shelf title='Read' shelfID='read' books={this.state.shelves.read} handleShelfChangeForBook={this.handleShelfChangeForBook}/>
-              </div>
-            </div>
-            <div className="open-search">
-              <Link to='/search'/>
-            </div>
-          </div>
+          <MyReads shelves={this.state.shelves} handleShelfChangeForBook={this.handleShelfChangeForBook} />
         )} />
       </div>
     )
