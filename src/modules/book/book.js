@@ -6,7 +6,13 @@ const Book = (props) => {
     return (
         <div className="book">
             <div className="book-top">
-                <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url("${bookDetails.imageLinks.thumbnail}")` }}></div>
+                <div className="book-cover" style={{
+                        width: 128, 
+                        height: 193, 
+                        backgroundImage: bookDetails.imageLinks && bookDetails.imageLinks.thumbnail
+                            ? `url("${bookDetails.imageLinks.thumbnail}")` 
+                            : ''
+                    }}></div>
                 <Menu handleShelfChangeForBook={handleShelfChangeForBook} book={bookDetails} shelfID={shelfID} />
             </div>
             <div className="book-title">{bookDetails.title}</div>
