@@ -9,17 +9,17 @@ const Menu = (props) => {
         none: 'None'
     }
 
-    const handleChange = (bookID) => {
+    const handleChange = (book) => {
         return (event) => {
             if (shelfMap[event.target.value]) {
-                props.handleShelfChangeForBook(bookID, event.target.value)
+                props.handleShelfChangeForBook(book, event.target.value)
             }
         }
     }
 
     return (
         <div className="book-shelf-changer">
-            <select value={props.shelfID} onChange={handleChange(props.bookID)}>
+            <select value={props.shelfID} onChange={handleChange(props.book)}>
                 <option value="move" disabled>Move to...</option>
                 {
                     Object.keys(shelfMap).map((shelf) => {

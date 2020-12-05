@@ -1,5 +1,6 @@
 import React from 'react'
 import {Link, Route} from 'react-router-dom'
+import {cloneDeep, unset} from 'lodash'
 
 import * as BooksAPI from './BooksAPI'
 import './App.css'
@@ -29,23 +30,37 @@ class BooksApp extends React.Component {
       wantToRead: [],
       read: []
     })
-    this.setState((current) => ({
-      ...current,
+    this.setState({
       shelves,
       bookShelfMap
-    }))
+    })
   }
 
-  handleShelfChangeForBook = async (bookID, shelf) => {
-    await BooksAPI.update({id: bookID}, shelf);
-    // At this point, we could have shuffled the state directly.
-    // But the backend could have been updated from a different browser/device too.
-    // Hence, it may be better to reset all shelves
-    this.refreshShelves();
+  handleShelfChangeForBook = async (book, shelf) => {
+    const currentShelf = this.state.bookShelfMap[book.id]
+    
+    const newState = cloneDeep(this.state)
+
+    // Remove the book from current shelf
+    if (newState.shelves[currentShelf]) {
+      newState.shelves[currentShelf] = newState.shelves[currentShelf].filter((currBook) => currBook.id !== book.id)
+    }
+
+    // Add the book to new shelf
+    if (newState.shelves[shelf]) {
+      newState.shelves[shelf].push(book)
+      newState.bookShelfMap[book.id] = shelf
+    } else {
+      unset(newState.bookShelfMap, book.id)
+    }
+
+    this.setState(newState)
+
+    BooksAPI.update({id: book.id}, shelf);
   }
 
-  async componentDidMount() {
-    this.refreshShelves();
+  componentDidMount() {
+    this.refreshShelves()
   }
 
   render() {
@@ -68,7 +83,7 @@ class BooksApp extends React.Component {
               </div>
             </div>
             <div className="open-search">
-              <Link className='open-search' to='/search'/>
+              <Link to='/search'/>
             </div>
           </div>
         )} />
